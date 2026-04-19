@@ -17,7 +17,8 @@ class SxvxnEngine:
 
         pg.display.gl_set_attribute(pg.GL_CONTEXT_MAJOR_VERSION, 3)
         pg.display.gl_set_attribute(pg.GL_CONTEXT_MINOR_VERSION, 3)
-        pg.display.gl_set_attribute(pg.GL_CONTEXT_PROFILE_MASK, pg.GL_CONTEXT_PROFILE_CORE)
+        pg.display.gl_set_attribute(
+            pg.GL_CONTEXT_PROFILE_MASK, pg.GL_CONTEXT_PROFILE_CORE)
         pg.display.set_mode(self.WIN_SIZE, flags=pg.OPENGL | pg.DOUBLEBUF)
 
         pg.event.set_grab(True)
@@ -32,10 +33,20 @@ class SxvxnEngine:
         self.delta_time = 0.0
         self.background_color = (0.10, 0.12, 0.16)
 
-        self.light = PointLight(position=(6.0, 8.0, 6.0), color=(1.0, 1.0, 1.0), intensity=1.2)
+        self.light = PointLight(position=(6.0, 8.0, 6.0),
+                                color=(1.0, 1.0, 1.0), intensity=1.2)
         self.camera = Camera(self)
         self.mesh = Mesh(self)
-        self.scene = Scene(self)
+        # self.scene = Scene(self)
+        from procedural_city import ProceduralCity
+        self.scene = ProceduralCity(self,
+                                    seed=42,
+                                    grid_size=40,
+                                    cell_size=5.5,
+                                    density=0.82,
+                                    height_variation=32.0,
+                                    max_height=70.0)
+
         self.scene_renderer = SceneRenderer(self)
 
     def check_events(self):
@@ -56,9 +67,11 @@ class SxvxnEngine:
 
             if event.type == pg.MOUSEBUTTONDOWN and self.camera.use_orbit:
                 if event.button == 4:
-                    self.camera.orbit_radius = max(2.0, self.camera.orbit_radius - 0.5)
+                    self.camera.orbit_radius = max(
+                        2.0, self.camera.orbit_radius - 0.5)
                 elif event.button == 5:
-                    self.camera.orbit_radius = min(40.0, self.camera.orbit_radius + 0.5)
+                    self.camera.orbit_radius = min(
+                        40.0, self.camera.orbit_radius + 0.5)
 
     def render(self):
         self.ctx.clear(color=self.background_color)

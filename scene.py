@@ -20,4 +20,3 @@ class Scene:
     def update(self):
         for o in self.objects:
             o.update()
-        

@@ -53,3 +53,8 @@ class ColorCube(BaseModelColor):
 class ColorPlane(BaseModelColor):
     def __init__(self, app, vao_name='color_plane', pos=(0, 0, 0), rot=(0, 0, 0), scale=(1, 1, 1), color=(1.0, 1.0, 1.0)):
         super().__init__(app, vao_name, pos, rot, scale, color)
+
+class ProceduralBuilding(BaseModelColor):
+    """Simple rectangular building using the existing color_cube VAO."""
+    def __init__(self, app, pos=(0,0,0), scale=(1,1,1), color=(0.18, 0.18, 0.22)):
+        super().__init__(app, vao_name='color_cube', pos=pos, scale=scale, color=color)
